@@ -1,5 +1,10 @@
 export async function fetchApi() {
-  const res = await fetch(`http://localhost:3000/api`);
+  // console.log(ctx)
+   const res = await fetch(
+     process.env.NODE_ENV === "development"
+       ? `http://localhost:3000/api`
+       : `/api/products`
+   );
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
