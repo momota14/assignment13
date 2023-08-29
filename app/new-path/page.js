@@ -3,7 +3,7 @@ export async function fetchApi() {
    const res = await fetch(
      process.env.NODE_ENV === "development"
        ? `http://localhost:3000/api`
-       : `https://assignment13-lime.vercel.app/api/products`
+       : `https://assignment13-lime.vercel.app/api`
    );
 
   if (!res.ok) {
