@@ -1,33 +1,23 @@
-"use client"
-import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react'
+export async function fetchApi() {
+  const res = await fetch(`http://localhost:3000/api`);
 
-function Page() {
-  const [theme, setTheme] = useState("");
-
-  function handleClick() {
-    const getTheme = Cookies.get("theme");
-    if (getTheme === "dark") {
-      Cookies.set("theme", "light");
-    } else {
-      Cookies.set("theme", "dark");
-    }
-    setTheme(Cookies.get("theme"));
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
   }
 
-  useEffect(() => {
-    const getTheme = Cookies.get("theme");
-    if(getTheme.exist()){
-      setTheme(getTheme)
-    }
-  },[])
-
-  return (
-    <main className="min-h-screen">
-      <div>Your theme is now: {theme}</div>
-      <button onClick={handleClick}>Click here to set cockie</button>
-    </main>
-  );
+  return res.json();
 }
 
-export default Page
+export default async function NewPage() {
+  const data = await fetchApi();
+  console.log(data.message);
+
+  return (
+    <div className="px-10 py-5 flex flex-col justify-center break-words w-full">
+      <div className="text-center text-2xl pb-3 font-semibold">This Data fetch from Api</div>
+      <div>{data.message}</div>
+      <div><span className="font-semibold">Your version is:</span> {data.version}</div>
+      <div><span className="font-semibold">Your token:</span>{data.token}</div>
+    </div>
+  );
+}
